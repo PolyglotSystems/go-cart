@@ -1,0 +1,1 @@
+This directory simply will hold built and distributable binaries of go-cart

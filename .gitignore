@@ -1,0 +1,9 @@
+config.yml
+config.yaml
+/go-cart
+nohup.out
+dist/go-cart
+dist/go-cart*
+.generated
+.generated/
+.generated/*
