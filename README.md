@@ -1,0 +1,6 @@
+# GoCart (go-cart) - Kubernetes Service Mapping
+
+[![Container Repository on Quay](https://quay.io/repository/PolyglotSystems/go-cart/status "Container Repository on Quay")](https://quay.io/repository/PolyglotSystems/go-cart) [![release](https://github.com/PolyglotSystems/go-cart/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/PolyglotSystems/go-cart/actions/workflows/release.yml) [![Tests](https://github.com/PolyglotSystems/go-cart/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/PolyglotSystems/go-cart/actions/workflows/test.yml) [![Go Reference](https://pkg.go.dev/badge/github.com/PolyglotSystems/go-cart.svg)](https://pkg.go.dev/github.com/PolyglotSystems/go-cart) [![Go Report Card](https://goreportcard.com/badge/github.com/PolyglotSystems/go-cart)](https://goreportcard.com/report/github.com/PolyglotSystems/go-cart) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/PolyglotSystems/go-cart/tree/main/LICENSE)
+
+GoCart (go-cart) is a simple Golang application, which when supplied a `config.yml` file will start a RESTful API via an HTTP server that will provide discovery of services and their workload mappings inside of a Kubernetes context.
+

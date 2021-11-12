@@ -1,0 +1,20 @@
+goCart:
+  cache_path: /opt/app-root/tmp
+
+  k8s_auth:
+    #method: kubeconfig
+    method: serviceaccount
+    paths:
+      #kubeconfig_path: /root/.kube/config
+      serviceaccount_path: /var/run/secrets/kubernetes.io/serviceaccount/token
+      certificate_path: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+
+  server:
+    host: 0.0.0.0
+    base_path: "/go-cart"
+    port: 8080
+    timeout:
+      server: 30
+      read: 15
+      write: 10
+      idle: 5

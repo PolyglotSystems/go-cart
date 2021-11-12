@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: go-cart
+  labels:
+    app: go-cart
+    app.kubernetes.io/name: go-cart
+    app.kubernetes.io/part-of: go-cart

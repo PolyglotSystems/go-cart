@@ -2,17 +2,12 @@ package goCart
 
 import (
 	b64 "encoding/base64"
-	"os"
 	"fmt"
+	"os"
 
-	"github.com/gosimple/slug"
 	"gopkg.in/yaml.v2"
+	"k8s.io/klog/v2"
 )
-
-// slugger slugs a string
-func slugger(textToSlug string) string {
-	return slug.Make(textToSlug)
-}
 
 // NewConfig returns a new decoded Config struct
 func NewConfig(configPath string) (*Config, error) {
@@ -39,7 +34,31 @@ func NewConfig(configPath string) (*Config, error) {
 
 // PreflightSetup just makes sure the stage is set
 func PreflightSetup() {
-	logStdOut("Preflight complete!")
+	// Set up Kubernetes Authentication
+	switch readConfig.GoCart.KubernetesAuthentication.Method {
+	case "kubeconfig":
+		// Set up Kubernetes Authentication via KubeConfig
+		klog.Infof("Connecting with kubeconfig located at %s", readConfig.GoCart.KubernetesAuthentication.Paths.KubeConfigPath)
+		newClient, err := authenticateViaKubeConfig(readConfig.GoCart.KubernetesAuthentication.Paths.KubeConfigPath)
+		if err != nil {
+			klog.Errorf("Error authenticating via kubeconfig:", err)
+			os.Exit(1)
+		}
+		kClient = newClient
+	case "serviceaccount":
+		// Set up Kubernetes Authentication via ServiceAccount
+		klog.Infof("Connecting with ServiceAccount located at %s", readConfig.GoCart.KubernetesAuthentication.Paths.ServiceAccountPath)
+		newClient, err := authenticateViaServiceAccount(readConfig.GoCart.KubernetesAuthentication.Paths.ServiceAccountPath, readConfig.GoCart.KubernetesAuthentication.Paths.CertificatePath)
+		if err != nil {
+			klog.Errorf("Error authenticating via ServiceAccount:", err)
+			os.Exit(1)
+		}
+		kClient = newClient
+	default:
+		klog.Errorf("Kubernetes Authentication Method '%s' is not supported", readConfig.GoCart.KubernetesAuthentication.Method)
+		os.Exit(1)
+	}
+	klog.Infof("%s", "Preflight complete!")
 }
 
 // ValidateConfigPath just makes sure, that the path provided is a file,

@@ -4,26 +4,29 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net"
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
+
 	//"strings"
 	"syscall"
 	"time"
+
+	"k8s.io/klog/v2"
 )
 
 // NewRouter generates the router used in the HTTP Server
 func NewRouter(basePath string) *http.ServeMux {
 
-	//var formattedBasePath string
-	//var apiVersionTag string
+	var formattedBasePath string
+	var apiPrefix string
 
 	if basePath == "" {
 		basePath = "/go-cart"
 	}
-	//formattedBasePath = strings.TrimRight(basePath, "/")
+	formattedBasePath = strings.TrimRight(basePath, "/")
 
 	// Create router and define routes and return that router
 	router := http.NewServeMux()
@@ -55,7 +58,29 @@ func NewRouter(basePath string) *http.ServeMux {
 	//====================================================================================
 	// START V1 API
 	//====================================================================================
-	//apiVersionTag = "/v1"
+	apiPrefix = "/v1"
+
+	router.HandleFunc(formattedBasePath+apiPrefix+"/namespaces", func(w http.ResponseWriter, r *http.Request) {
+		logNeworkRequestStdOut(r.Method+" "+r.RequestURI, r)
+		switch r.Method {
+		case "GET":
+			// index - get namespaces
+			getNamespacesQuery(w, r)
+		default:
+			methodNotAllowedAPI(w, r)
+		}
+	})
+
+	router.HandleFunc(formattedBasePath+apiPrefix+"/dashboard", func(w http.ResponseWriter, r *http.Request) {
+		logNeworkRequestStdOut(r.Method+" "+r.RequestURI, r)
+		switch r.Method {
+		case "GET":
+			// index - get dashboard data
+			getDashboardData(w, r)
+		default:
+			methodNotAllowedAPI(w, r)
+		}
+	})
 
 	return router
 }
@@ -90,7 +115,7 @@ func (config Config) RunHTTPServer() {
 	signal.Notify(runChan, os.Interrupt, syscall.SIGTSTP)
 
 	// Alert the user that the server is starting
-	log.Printf("Server is starting on %s\n", server.Addr)
+	klog.Infof("Server is starting on %s\n", server.Addr)
 
 	// Run the server on a new goroutine
 	go func() {
@@ -99,11 +124,19 @@ func (config Config) RunHTTPServer() {
 			if err == http.ErrServerClosed {
 				// Normal interrupt operation, ignore
 			} else {
-				log.Fatalf("Server failed to start due to err: %v", err)
+				klog.Fatalf("Server failed to start due to err: %v", err)
 			}
 		}
 
 	}()
+
+	//go func() {
+	//	//testQueryLoop()
+	//	for {
+	//		klog.Infof(`{"namespaces": %v }`, string(runMapper()))
+	//		time.Sleep(time.Second * 10)
+	//	}
+	//}()
 
 	// Block on this channel listeninf for those previously defined syscalls assign
 	// to variable so we can let the user know why the server is shutting down
@@ -111,8 +144,8 @@ func (config Config) RunHTTPServer() {
 
 	// If we get one of the pre-prescribed syscalls, gracefully terminate the server
 	// while alerting the user
-	log.Printf("Server is shutting down due to %+v\n", interrupt)
+	klog.Infof("Server is shutting down due to %+v\n", interrupt)
 	if err := server.Shutdown(ctx); err != nil {
-		log.Fatalf("Server was unable to gracefully shutdown due to err: %+v", err)
+		klog.Fatalf("Server was unable to gracefully shutdown due to err: %+v", err)
 	}
 }

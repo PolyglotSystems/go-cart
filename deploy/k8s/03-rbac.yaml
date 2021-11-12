@@ -1,0 +1,29 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: go-cart-mapper
+rules:
+  - verbs:
+      - get
+      - watch
+      - list
+    apiGroups:
+      - ''
+    resources:
+      - namespaces
+      - services
+      - pods
+      - deployments
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: go-cart-mapper
+subjects:
+- kind: ServiceAccount
+  name: go-cart
+  namespace: go-cart
+roleRef:
+  kind: ClusterRole
+  name: go-cart-mapper
+  apiGroup: rbac.authorization.k8s.io
