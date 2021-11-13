@@ -1,4 +1,4 @@
-package goCart
+package gocart
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 // applicationVersionAPI returns the application version
 func applicationVersionAPI(w http.ResponseWriter, r *http.Request) {
 	logNeworkRequestStdOut(r.Method+" "+r.RequestURI, r)
-	fmt.Fprintf(w, "go-cart version: %s\n", goCartVersion)
+	fmt.Fprintf(w, "go-cart version: %s\n", gocartVersion)
 }
 
 // healthZAPI returns the application availability & health

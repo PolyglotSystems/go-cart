@@ -1,4 +1,4 @@
-goCart:
+gocart:
   cache_path: /opt/app-root/tmp
 
   k8s_auth:

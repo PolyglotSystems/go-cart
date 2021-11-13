@@ -1,4 +1,4 @@
-package goCart
+package gocart
 
 import (
 	"context"
@@ -16,6 +16,11 @@ import (
 
 	"k8s.io/klog/v2"
 )
+
+func EnableCORS(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+}
 
 // NewRouter generates the router used in the HTTP Server
 func NewRouter(basePath string) *http.ServeMux {
@@ -47,11 +52,13 @@ func NewRouter(basePath string) *http.ServeMux {
 	// KUBERNETES ENDPOINTS
 	// Version Output - reads from variables.go
 	router.HandleFunc("/version", func(w http.ResponseWriter, r *http.Request) {
+		EnableCORS(w)
 		applicationVersionAPI(w, r)
 	})
 
 	// Healthz endpoint for kubernetes platforms
 	router.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		EnableCORS(w)
 		healthZAPI(w, r)
 	})
 
@@ -62,6 +69,9 @@ func NewRouter(basePath string) *http.ServeMux {
 
 	router.HandleFunc(formattedBasePath+apiPrefix+"/namespaces", func(w http.ResponseWriter, r *http.Request) {
 		logNeworkRequestStdOut(r.Method+" "+r.RequestURI, r)
+		EnableCORS(w)
+		//w.Header().Set("Access-Control-Allow-Origin", "*")
+		//w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		switch r.Method {
 		case "GET":
 			// index - get namespaces
@@ -73,6 +83,7 @@ func NewRouter(basePath string) *http.ServeMux {
 
 	router.HandleFunc(formattedBasePath+apiPrefix+"/dashboard", func(w http.ResponseWriter, r *http.Request) {
 		logNeworkRequestStdOut(r.Method+" "+r.RequestURI, r)
+		EnableCORS(w)
 		switch r.Method {
 		case "GET":
 			// index - get dashboard data

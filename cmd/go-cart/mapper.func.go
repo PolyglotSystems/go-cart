@@ -1,4 +1,4 @@
-package goCart
+package gocart
 
 import (
 	"encoding/json"

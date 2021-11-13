@@ -1,4 +1,4 @@
-package goCart
+package gocart
 
 // RESTGETDasboardDataJSONReturn handles the data returned by the GET /dashboard endpoint for dashboard data
 type RESTGETDasboardDataJSONReturn struct {

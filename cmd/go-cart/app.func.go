@@ -1,4 +1,4 @@
-package goCart
+package gocart
 
 import (
 	b64 "encoding/base64"

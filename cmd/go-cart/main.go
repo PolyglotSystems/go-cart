@@ -1,4 +1,4 @@
-package goCart
+package gocart
 
 // Func main should be as small as possible and do as little as possible by convention
 func main() {

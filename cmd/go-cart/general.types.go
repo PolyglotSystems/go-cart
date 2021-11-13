@@ -1,4 +1,4 @@
-package goCart
+package gocart
 
 import (
 	"time"
@@ -19,7 +19,7 @@ func (e *errorString) Error() string {
 
 // Config struct for webapp config
 type Config struct {
-	GoCart ConfigYAML `yaml:"goCart"`
+	GoCart ConfigYAML `yaml:"gocart"`
 }
 
 // ConfigYAML is the overall specification for what is defined for this go-cart server
@@ -31,7 +31,7 @@ type ConfigYAML struct {
 	KubernetesAuthentication KubernetesAuthentication `yaml:"k8s_auth"`
 
 	// Server is the server configuration structure
-	Server  Server `yaml:"server"`
+	Server Server `yaml:"server"`
 }
 
 // KubernetesAuthentication is the configuration for the Kubernetes API Authentication
@@ -60,7 +60,7 @@ type Server struct {
 	Host string `yaml:"host"`
 
 	// Port is the local machine TCP Port to bind the HTTP Server to
-	Port    string `yaml:"port"`
+	Port string `yaml:"port"`
 
 	// BasePath is the API base path (eg: /api)
 	BasePath string `yaml:"base_path"`

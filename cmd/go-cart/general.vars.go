@@ -1,11 +1,10 @@
-package goCart
+package gocart
 
 import (
-
 	"k8s.io/client-go/kubernetes"
 )
 
-var goCartVersion string = "0.0.1"
+var gocartVersion string = "0.0.1"
 var readConfig *Config
 
 var kClient *kubernetes.Clientset

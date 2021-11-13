@@ -1,7 +1,9 @@
 package main
 
-import "github.com/PolyglotSystems/go-cart/cmd/go-cart"
+import (
+	gocart "github.com/PolyglotSystems/go-cart/cmd/go-cart"
+)
 
 func main() {
-	goCart.Bootstrap()
+	gocart.Bootstrap()
 }

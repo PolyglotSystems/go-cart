@@ -1,22 +1,23 @@
-package goCart
+package gocart
 
 import (
-	"os"
 	"io/ioutil"
+	"os"
+
+	"net"
 
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/klog/v2"
-	"net"
 	certutil "k8s.io/client-go/util/cert"
+	"k8s.io/klog/v2"
 )
 
 // authenticateViaKubeConfig authenticates via kubeconfig
 // @param kubeconfigPath string
 // @return (*kubernetes.Clientset, error)
 func authenticateViaKubeConfig(kubeConfigPath string) (*kubernetes.Clientset, error) {
-	
+
 	// Create a Config (k8s.io/client-go/rest.Config)
 	// from the kubeConfigPath
 	config, err := clientcmd.BuildConfigFromFlags("", kubeConfigPath)
@@ -33,10 +34,10 @@ func authenticateViaKubeConfig(kubeConfigPath string) (*kubernetes.Clientset, er
 
 	return clientset, nil
 }
-	
+
 // authenticateViaServiceAccount returns a Clientset object which uses the service account
 // kubernetes gives to pods. It's intended for clients that expect to be
-// running inside a pod running on kubernetes. 
+// running inside a pod running on kubernetes.
 // @param serviceAccountTokenPath string, path to the service account token
 // @param serviceAccountCertificatePath string, path to the service account certificate
 // @return (*kubernetes.Clientset, error)
